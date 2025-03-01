@@ -25,7 +25,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWebEngineView" name="webEngineView">
+    <widget class="QWebEngineView" name="EklemeHaritasi">
      <property name="url">
       <url>
        <string>about:blank</string>
