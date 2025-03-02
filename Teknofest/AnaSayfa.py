@@ -16,9 +16,6 @@ class anasayfaPage(QMainWindow):
         self.anaform.setupUi(self)
         self.ekleme_pencere_ac = eklemePage()
 
-        # Ekleme penceresi kapanınca ana sayfayı tekrar aç
-        self.ekleme_pencere_ac.closeEvent = self.ekleme_kapaninca_ac
-
         # Liste için model oluştur
         self.model = QStringListModel()
         self.liste_elemanlari = self.yukle_verileri()
@@ -45,15 +42,25 @@ class anasayfaPage(QMainWindow):
             QMessageBox.warning(self, "Hata", "Lütfen bir isim giriniz!")
             return
 
+        # Aynı ismin daha önce eklenip eklenmediğini kontrol et
+        if text in self.liste_elemanlari:
+            QMessageBox.warning(self, "Hata", "Bu isim zaten eklenmiş!")
+            return
+
+        # Geçici olarak listeye ekle
         self.liste_elemanlari.append(text)
         self.model.setStringList(self.liste_elemanlari)
         self.model.layoutChanged.emit()
         self.kaydet_verileri()
+
         self.anaform.lineEdit_ekle.clear()
 
-        # Ana sayfayı tamamen kapat ve ekleme penceresini aç
-        self.close()  # Ana sayfayı tamamen kapat
+        # Ekleme penceresini aç
+        self.close()
         self.ekleme_pencere_ac.show()
+
+        # Kullanıcı pencereyi kapattığında kontrol et
+        self.ekleme_pencere_ac.closeEvent = self.ekleme_kontrol
 
     def Sil(self):
         """ListView üzerinden seçilen veya lineEdit_sil içindeki metne göre elemanı siler."""
@@ -75,10 +82,18 @@ class anasayfaPage(QMainWindow):
         else:
             QMessageBox.warning(self, "Hata", "Silinecek öğe bulunamadı!")
 
-    def ekleme_kapaninca_ac(self, event):
-        """Ekleme penceresi kapanınca ana sayfayı tekrar açar."""
-        self.__init__()  # Ana sayfa yeniden başlat
-        self.show()  # Ana sayfayı tekrar göster
+    def ekleme_kontrol(self, event):
+        """Ekleme penceresi kapandığında iptal edilip edilmediğini kontrol eder."""
+        if self.ekleme_pencere_ac.iptal_edildi:
+            # Eğer iptal edildiyse, son eklenen öğeyi kaldır
+            if self.liste_elemanlari:
+                self.liste_elemanlari.pop()
+                self.model.setStringList(self.liste_elemanlari)
+                self.model.layoutChanged.emit()
+                self.kaydet_verileri()
+        
+        # Ana sayfayı tekrar aç
+        self.show()
         event.accept()
 
     def kaydet_verileri(self):

@@ -21,5 +21,13 @@ class eklemePage(QtWidgets.QWidget):
         local_url = QtCore.QUrl.fromLocalFile(file_path)
         self.webview.setUrl(local_url)
 
-        # İptal butonuna tıklanınca pencereyi kapat
-        self.ekleform.pushButton_2.clicked.connect(self.close)
+        # İptal değişkeni
+        self.iptal_edildi = False  
+
+        # İptal butonuna tıklanınca pencereyi kapat ve iptal bayrağını ayarla
+        self.ekleform.pushButton_2.clicked.connect(self.iptal_et)
+
+    def iptal_et(self):
+        """İptal butonuna basıldığında durumu kaydet ve pencereyi kapat."""
+        self.iptal_edildi = True
+        self.close()
