@@ -7,21 +7,19 @@ class eklemePage(QtWidgets.QWidget):
         super().__init__()
         self.ekleform = ekleme_python.Ui_Form()
         self.ekleform.setupUi(self)
+        self.webview = self.ekleform.EklemeHaritasi
 
-        # WebEngineView'in doğru ismini kullan
-        self.webview = self.ekleform.EklemeHaritasi  # Güncellenmiş isim kullanıldı!
-
-        # WebEngineView’in pencere boyutuna uyum sağlamasını sağla
         self.webview.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
-        self.webview.resize(self.width(), self.height())  # Pencere boyutuna tam uyacak
+        self.webview.resize(self.width(), self.height())
 
-        # Eğer layout içinde değilse, yeniden ekleyelim
         if self.webview.parent() is None:
             layout = QtWidgets.QVBoxLayout(self)
             layout.addWidget(self.webview)
             self.setLayout(layout)
 
-        # Harita dosyasının tam yolunu al ve yükle
         file_path = os.path.abspath("map.html")
         local_url = QtCore.QUrl.fromLocalFile(file_path)
         self.webview.setUrl(local_url)
+
+        # İptal butonuna tıklanınca pencereyi kapat
+        self.ekleform.pushButton_2.clicked.connect(self.close)

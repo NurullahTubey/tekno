@@ -54,7 +54,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QWebEngineView" name="webEngineView_2">
+       <widget class="QWebEngineView" name="AnaHarita">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
           <horstretch>0</horstretch>

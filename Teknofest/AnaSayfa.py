@@ -1,7 +1,8 @@
 import os
 import json
 from PyQt5.QtWidgets import QMainWindow, QMessageBox
-from PyQt5.QtCore import QStringListModel
+from PyQt5.QtCore import QStringListModel, QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 
 import AnaSayfa_python
 from ekleme import eklemePage
@@ -27,6 +28,14 @@ class anasayfaPage(QMainWindow):
         # Buton sinyalleri
         self.anaform.Buton_ekle.clicked.connect(self.Ekle)
         self.anaform.Buton_sil.clicked.connect(self.Sil)
+
+        # Ana sayfadaki harita için WebEngineView bileşenini al
+        self.webview = self.anaform.AnaHarita  # UI dosyasındaki AnaHarita adlı QWebEngineView
+
+        # Harita dosyasını yükle
+        file_path = os.path.abspath("map.html")
+        local_url = QUrl.fromLocalFile(file_path)
+        self.webview.setUrl(local_url)
 
     def Ekle(self):
         """Ekleme butonuna basınca ekleme sayfasını açar ve ana sayfayı tamamen kapatır."""
