@@ -1,8 +1,11 @@
 import os
 import json
-from PyQt5.QtWidgets import QMainWindow, QMessageBox
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QMessageBox, QVBoxLayout
 from PyQt5.QtCore import QStringListModel, QUrl
 from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtMultimedia import QCamera, QCameraInfo
+from PyQt5.QtMultimediaWidgets import QCameraViewfinder
 
 import AnaSayfa_python
 from ekleme import eklemePage
@@ -26,13 +29,37 @@ class anasayfaPage(QMainWindow):
         self.anaform.Buton_ekle.clicked.connect(self.Ekle)
         self.anaform.Buton_sil.clicked.connect(self.Sil)
 
-        # Ana sayfadaki harita için WebEngineView bileşenini al
-        self.webview = self.anaform.AnaHarita  # UI dosyasındaki AnaHarita adlı QWebEngineView
-
-        # Harita dosyasını yükle
+        # 📌 Harita Görüntüleme
+        self.webview = self.anaform.AnaHarita
         file_path = os.path.abspath("map.html")
         local_url = QUrl.fromLocalFile(file_path)
         self.webview.setUrl(local_url)
+
+        # 📌 Kamera Görüntüsünü **tam ekran kaplayacak şekilde** ayarla
+        self.kamera_aygiti = self._kamera_sec()
+        if self.kamera_aygiti:
+            self.kamera = QCamera(self.kamera_aygiti)
+            
+            # Kamera görüntüsünü tam kaplayacak şekilde ayarlayalım
+            self.viewfinder = QCameraViewfinder()
+            self.viewfinder.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)  
+            self.viewfinder.setMinimumSize(self.anaform.kamera.size())  # Kamera alanının boyutunu al
+            
+            # Layout oluştur ve kamera alanına ekle
+            layout = QVBoxLayout()
+            layout.addWidget(self.viewfinder)
+            layout.setContentsMargins(0, 0, 0, 0)  # Kenar boşluklarını sıfırla
+            self.anaform.kamera.setLayout(layout)  
+
+            self.kamera.setViewfinder(self.viewfinder)
+            self.kamera.start()  # Kamerayı başlat
+
+    def _kamera_sec(self):
+        """Varsayılan kamerayı seçer."""
+        kamera_listesi = QCameraInfo.availableCameras()
+        if kamera_listesi:
+            return kamera_listesi[0]  # İlk kamerayı kullan
+        return None
 
     def Ekle(self):
         """Ekleme butonuna basınca ekleme sayfasını açar ve ana sayfayı tamamen kapatır."""
@@ -42,24 +69,19 @@ class anasayfaPage(QMainWindow):
             QMessageBox.warning(self, "Hata", "Lütfen bir isim giriniz!")
             return
 
-        # Aynı ismin daha önce eklenip eklenmediğini kontrol et
         if text in self.liste_elemanlari:
             QMessageBox.warning(self, "Hata", "Bu isim zaten eklenmiş!")
             return
 
-        # Geçici olarak listeye ekle
         self.liste_elemanlari.append(text)
         self.model.setStringList(self.liste_elemanlari)
         self.model.layoutChanged.emit()
         self.kaydet_verileri()
 
         self.anaform.lineEdit_ekle.clear()
-
-        # Ekleme penceresini aç
         self.close()
         self.ekleme_pencere_ac.show()
 
-        # Kullanıcı pencereyi kapattığında kontrol et
         self.ekleme_pencere_ac.closeEvent = self.ekleme_kontrol
 
     def Sil(self):
@@ -67,32 +89,28 @@ class anasayfaPage(QMainWindow):
         selected_index = self.anaform.listView.currentIndex().row()
         silinecek_metin = self.anaform.lineEdit_sil.text().strip()
 
-        if selected_index != -1:  # Eğer listView'den seçim yapılmışsa
+        if selected_index != -1:
             silinecek_metin = self.liste_elemanlari[selected_index]
 
         if silinecek_metin in self.liste_elemanlari:
-            self.liste_elemanlari.remove(silinecek_metin)  # Listeden çıkar
-            self.model.setStringList(self.liste_elemanlari)  # Listeyi güncelle
-            self.model.layoutChanged.emit()  # Güncelleme sinyali gönder
-            self.kaydet_verileri()  # JSON dosyasını güncelle
+            self.liste_elemanlari.remove(silinecek_metin)
+            self.model.setStringList(self.liste_elemanlari)
+            self.model.layoutChanged.emit()
+            self.kaydet_verileri()
 
-            # lineEdit_sil temizle
             self.anaform.lineEdit_sil.clear()
-
         else:
             QMessageBox.warning(self, "Hata", "Silinecek öğe bulunamadı!")
 
     def ekleme_kontrol(self, event):
         """Ekleme penceresi kapandığında iptal edilip edilmediğini kontrol eder."""
         if self.ekleme_pencere_ac.iptal_edildi:
-            # Eğer iptal edildiyse, son eklenen öğeyi kaldır
             if self.liste_elemanlari:
                 self.liste_elemanlari.pop()
                 self.model.setStringList(self.liste_elemanlari)
                 self.model.layoutChanged.emit()
                 self.kaydet_verileri()
         
-        # Ana sayfayı tekrar aç
         self.show()
         event.accept()
 
