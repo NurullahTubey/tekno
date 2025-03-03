@@ -45,6 +45,8 @@ class anasayfaPage(QMainWindow):
             self.viewfinder.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)  
             self.viewfinder.setMinimumSize(self.anaform.kamera.size())  # Kamera alanının boyutunu al
             
+            
+
             # Layout oluştur ve kamera alanına ekle
             layout = QVBoxLayout()
             layout.addWidget(self.viewfinder)

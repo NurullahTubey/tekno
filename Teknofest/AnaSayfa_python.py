@@ -16,7 +16,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(902, 585)
         MainWindow.setAutoFillBackground(False)
-        MainWindow.setStyleSheet("background-color: #1a1a2e")
+        MainWindow.setStyleSheet("background-color: #1a1a2e; color: white")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)

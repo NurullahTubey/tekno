@@ -10,12 +10,37 @@
     <height>377</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <family>Bahnschrift Light</family>
+    <pointsize>12</pointsize>
+    <weight>75</weight>
+    <bold>true</bold>
+    <underline>true</underline>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: #1a1a2e;color: white</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,10,0">
    <item>
     <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <family>Bahnschrift SemiBold Condensed</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+       <underline>true</underline>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: #39ff14;
+</string>
+     </property>
      <property name="text">
       <string>Eklemek İstediğiniz Konumu Harita Üzerinden Seçin</string>
      </property>
@@ -37,6 +62,15 @@
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #E94560; color: white; border-radius: 5px;</string>
+       </property>
        <property name="text">
         <string>Kaydet</string>
        </property>
@@ -44,6 +78,15 @@
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_2">
+       <property name="minimumSize">
+        <size>
+         <width>120</width>
+         <height>40</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: #E94560; color: white; border-radius: 5px;</string>
+       </property>
        <property name="text">
         <string>İptal</string>
        </property>
