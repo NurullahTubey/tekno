@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ana Sayfa</title>
+    <link rel="stylesheet" href="anasayfa.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Sol Sidebar -->
+    <div class="sidebar">
+        <h2><i class="far fa-square-plus"></i> &nbsp;Ekle</h2>
+        <ul></ul>
+    </div>
+
+    <!-- İçerik Alanı (Harita ve Arama Çubuğu) -->
+    <div class="content">
+        <!-- Arama Çubuğu -->
+        <div class="search-bar">
+            <input type="text" id="startLocation" placeholder="Başlangıç noktası">
+            <input type="text" id="endLocation" placeholder="Varış noktası">
+            <button id="searchRoute">Rota Bul</button>
+        </div>
+
+        <!-- Harita -->
+        <div id="map"></div>
+    </div>
+
+    <!-- Sağ Dronebar -->
+    <div class="dronebar">
+        <h2><img src="images/drone-svgrepo-com.svg" alt="Drone" style="width: 20px; height: 20px; margin-right: 8px;">&nbsp;Drone</h2>
+        <ul></ul>
+    </div>
+
+    <!-- Leaflet ve JS dosyaları -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="anasayfa.js"></script>
+</body>
+</html> 

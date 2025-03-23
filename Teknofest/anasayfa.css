@@ -1,0 +1,82 @@
+body {
+    display: flex;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1e293b;
+    color: white;
+    height: 100vh;
+}
+
+/* Sidebar ve Dronebar */
+.sidebar, .dronebar {
+    width: 200px;
+    background-color: #111827;
+    padding: 20px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center; 
+}
+
+/* İçerik alanı (Harita + Arama Çubuğu) */
+.content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column; /* Arama çubuğunu yukarıda tut */
+    align-items: center;
+    padding: 20px;
+}
+
+/* Harita */
+#map {
+    width: 100%;
+    height: calc(100vh - 80px); /* Arama çubuğu için yukarıda boşluk bırak */
+    min-height: 500px;
+    border-radius: 10px;
+}
+
+/* Sağdaki dronebar */
+.dronebar {
+    position: relative;
+    right: 0;
+    top: 0;
+}
+
+.dronebar ul {
+    list-style-type: none; /* Madde işaretlerini kaldır */
+    padding: 0;
+}
+
+/* Arama Çubuğu */
+.search-bar {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px; /* Harita ile arasında boşluk bırak */
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.search-bar button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #0056b3;
+}
